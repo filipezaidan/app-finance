@@ -1,10 +1,12 @@
-import React from 'react-native';
+import React from 'react';
 
 import AuthRoutes from './auth.routes';
 import AppStack from './app.routes';
 
-export default function Routes(){
+function Routes(){
     return(
         <AuthRoutes/>
     );
 }
+
+export default Routes;

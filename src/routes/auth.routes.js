@@ -9,7 +9,13 @@ const AuthStack = createStackNavigator();
 export default function AuthRoutes(){
     return(
         <AuthStack.Navigator>
-            <AuthStack.Screen name="Sign" component={SigIn}/>
+            <AuthStack.Screen 
+                name="Sign" 
+                component={SigIn} 
+                options={{
+                    headerShown: false
+                }}
+            />
         </AuthStack.Navigator>
 
     );
