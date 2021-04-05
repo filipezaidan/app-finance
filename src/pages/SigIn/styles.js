@@ -28,7 +28,7 @@ export const Input = styled.TextInput.attrs({
     background-color: rgba(0,0,0,0.20);
     width: 90%;
     color: #fff;
-    margin-bottom: 15px
+    margin-bottom: 15px;
     font-size: 17px;
     padding: 10px;
     border-radius: 7px;
@@ -51,7 +51,7 @@ export const SubmitText = styled.Text`
 `;
 
 export const Link = styled.View`
-    margin-top: 5px
+    margin-top: 5px;
     margin-bottom: 10px
 `;
 
