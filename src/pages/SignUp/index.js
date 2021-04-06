@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import { AuthContext } from '../../contexts/auth';
 
 //Criar um style global para otimizaçao do código
 import { 
@@ -19,6 +21,13 @@ export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { signUp } = useContext(AuthContext);
+
+  function handleSignUp(){
+    signUp(name, email, password);
+  }
+
 
  return (
     <Background>
@@ -54,7 +63,7 @@ export default function SignUp() {
           />
         </AreaInput>
 
-        <SubmitButton onPress={() => navigation.navigate("")}>
+        <SubmitButton onPress={handleSignUp}>
           <SubmitText>Cadastrar</SubmitText>
         </SubmitButton>
 

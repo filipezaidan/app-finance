@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import Home from '../pages/Home';
 
-
 const AppStack = createStackNavigator();
 
 export default function AuthRoutes(){
