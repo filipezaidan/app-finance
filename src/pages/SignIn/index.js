@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { 
@@ -13,12 +13,20 @@ import {
   LinkText
 } from './styles';
 
+import { AuthContext } from '../../contexts/auth';
+
 export default function SignIn() {
 
   const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signIn } = useContext(AuthContext);
+
+
+  function handleSignIn(){
+    signIn(email, password);
+  }
 
  return (
     <Background>
@@ -45,7 +53,7 @@ export default function SignIn() {
           />
         </AreaInput>
 
-        <SubmitButton>
+        <SubmitButton onPress={handleSignIn}>
           <SubmitText>Acessar</SubmitText>
         </SubmitButton>
 
