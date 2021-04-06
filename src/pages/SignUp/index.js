@@ -1,26 +1,39 @@
 import React, { useState } from 'react';
+import { Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+//Criar um style global para otimizaçao do código
 import { 
   Background, 
-  Container, 
-  Logo, 
+  Container,  
   AreaInput,
   Input, 
   SubmitButton, 
   SubmitText, 
-  Link, 
-  LinkText
-} from './styles';
+} from '../SignIn/styles';
 
-export default function SigIn() {
+export default function SignUp() {
 
+  const navigation = useNavigation();
+
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
  return (
     <Background>
-      <Container>
-        <Logo source={require('../../assets/Logo.png')}/>
-    
+      <Container behavior={Platform.OS === 'ios' ? "padding" : ""} enable >
+
+        <AreaInput>
+          <Input 
+            placeholder="Nome"
+            autoCorret={true}
+            autoCapitalize="none"
+            value={name}
+            onChangeText = { (text) => setName(text) }
+          />
+        </AreaInput>
+
         <AreaInput>
           <Input 
             placeholder="Email"
@@ -41,13 +54,9 @@ export default function SigIn() {
           />
         </AreaInput>
 
-        <SubmitButton>
-          <SubmitText>Acessar</SubmitText>
+        <SubmitButton onPress={() => navigation.navigate("")}>
+          <SubmitText>Cadastrar</SubmitText>
         </SubmitButton>
-
-        <Link>
-          <LinkText>Criar uma conta!</LinkText>
-        </Link>
 
       </Container>
     </Background>

@@ -50,9 +50,13 @@ export const SubmitText = styled.Text`
     color: #131313;
 `;
 
-export const Link = styled.View`
+export const Link = styled.TouchableOpacity`
     margin-top: 5px;
-    margin-bottom: 10px
+    margin-bottom: 10px;
+    height: 30px;
+    width: 40%;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const LinkText = styled.Text`
