@@ -63,12 +63,23 @@ export default function AuthProvider({ children }){
         } )
     }
 
+    //Armazena data no AsyncStorage
     async function storageUser(data){
         await AsyncStorage.setItem('Auth_user', JSON.stringify(data));
     }
 
+
+    //Desloga do firebase e limpa AsyncStorage
+    async function signOut(){
+        await firebase.auth().signOut();
+        await AsyncStorage.clear()
+        .then( () => {
+            setUser(null);
+        })
+    }
+
     return(
-        <AuthContext.Provider value={{ signed: !!user, user, loading, signUp, signIn }}>
+        <AuthContext.Provider value={{ signed: !!user, user, loading, signUp, signIn, signOut }}>
             {children}
         </AuthContext.Provider>
     );
