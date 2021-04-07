@@ -1,12 +1,22 @@
-import React, {useState, createContext} from 'react';
-import { SnapshotViewIOSComponent } from 'react-native';
-
+import React, {useState, useEffect ,createContext} from 'react';
 import firebase from '../services/firebaseConection';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthContext = createContext({});
 
 export default function AuthProvider({ children }){
     const [user, setUser] = useState(null);
+
+    useEffect( () => {
+        async function loadStorage(){
+            const storageUser = await AsyncStorage.getItem('Auth_user');
+
+            if(storageUser){
+                setUser(JSON.parse(storageUser));
+            }
+        }
+        loadStorage();
+    }, [])
 
     //Logar usuário
     async function signIn(email, password) {
@@ -21,6 +31,7 @@ export default function AuthProvider({ children }){
                     email: value.user.email,
                 }
                 setUser(data);
+                storageUser(data);
             })
         })
         .catch( (error) => {
@@ -43,8 +54,13 @@ export default function AuthProvider({ children }){
                     email: email
                 }
                 setUser(data);
+                storageUser(data);
             })
         } )
+    }
+
+    async function storageUser(data){
+        await AsyncStorage.setItem('Auth_user', JSON.stringify(data));
     }
 
     return(
