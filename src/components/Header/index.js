@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Container, ButtonMenu } from './styles';
 import { Feather } from "@expo/vector-icons"
 
-
 export default function Header() {
     const navigation = useNavigation();
 

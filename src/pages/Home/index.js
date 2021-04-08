@@ -9,6 +9,7 @@ import HistoricList from '../../components/HistoricList';
 
 export default function Home() {
 
+
   const [historic, sethistoric] = useState([
     {key: '1', type: 'receita', value: 1300},
     {key: '2', type: 'receita', value: 1300},
@@ -24,11 +25,10 @@ export default function Home() {
 
   return (
    <Background>
-
      <Header/>
 
      <Container>
-        <Name>Filipe Zaidan</Name>
+        <Name>{user && user.name}</Name>
         <Balance>R$ 2.000</Balance>
      </Container>
 
