@@ -1,4 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import firebase from '../../services/firebaseConection';
+import { format } from 'date-fns';
 
 import { Background, Container, Name, Balance, Title, List} from './styles'
 
@@ -9,19 +11,37 @@ import HistoricList from '../../components/HistoricList';
 
 export default function Home() {
 
-
-  const [historic, sethistoric] = useState([
-    {key: '1', type: 'receita', value: 1300},
-    {key: '2', type: 'receita', value: 1300},
-    {key: '3', type: 'receita', value: 1300},
-    {key: '4', type: 'despesa', value: 1300},
-    {key: '5', type: 'receita', value: 1300},
-    {key: '6', type: 'receita', value: 1300},
-    {key: '7', type: 'receita', value: 1300},
-    {key: '8', type: 'receita', value: 1300},
-  ]);
+  const [historic, sethistoric] = useState([]);
+  const [balance, setBalance] = useState(0);
 
   const { user } = useContext(AuthContext); 
+  const uid = user && user.uid;
+
+  useEffect( () => {
+    async function loadingList(){
+      await firebase.database().ref('users').child(uid).on('value', (snapshot) => {
+        setBalance(snapshot.val().saldo);
+      });
+
+      await firebase.database().ref('historic')
+      .child(uid)
+      .orderByChild('date').equalTo(format(new Date, 'dd/MM/yy'))
+      .limitToLast(10).on('value', (snapshot) => {
+        sethistoric([]);
+
+        snapshot.forEach( (childItem) => {
+          let list = {
+            key: childItem.key,
+            type: childItem.val().type,
+            value: childItem.val().value,
+          }
+          sethistoric(oldArray => [...oldArray, list].reverse());
+        })
+      })
+    }
+
+    loadingList();
+  }, [])
 
   return (
    <Background>
@@ -29,7 +49,7 @@ export default function Home() {
 
      <Container>
         <Name>{user && user.name}</Name>
-        <Balance>R$ 2.000</Balance>
+        <Balance>R$ {balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</Balance>
      </Container>
 
      <Title>Últimas transações</Title>
