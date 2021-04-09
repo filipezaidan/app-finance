@@ -28,7 +28,6 @@ export default function SignUp() {
     signUp(name, email, password);
   }
 
-
  return (
     <Background>
       <Container behavior={Platform.OS === 'ios' ? "padding" : ""} enable >
@@ -60,6 +59,7 @@ export default function SignUp() {
             autoCapitalize="none"
             value={password}  
             onChangeText = { (text) => setPassword(text) }
+            secureTextEntry = {true}
           />
         </AreaInput>
 
