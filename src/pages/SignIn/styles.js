@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const Background = styled.View`
     flex: 1;
-    background-color: #131313
+    background-color: #131313;
 `;
 
 export const Container = styled.KeyboardAvoidingView`
@@ -42,7 +42,7 @@ export const SubmitButton = styled.TouchableOpacity`
     height: 45px;
     background-color: #00b94a;
     margin-bottom: 10px;
-    border-radius: 7px
+    border-radius: 7px;
 `;
 
 export const SubmitText = styled.Text`
@@ -60,5 +60,5 @@ export const Link = styled.TouchableOpacity`
 `;
 
 export const LinkText = styled.Text`
-    color: #fff 
+    color: #fff;
 `;
