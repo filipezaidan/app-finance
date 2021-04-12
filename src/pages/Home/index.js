@@ -1,19 +1,23 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Alert } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import firebase from '../../services/firebaseConection';
 import { format, isPast } from 'date-fns';
 
-import { Background, Container, Name, Balance, Title, List} from './styles'
+import { Background, Container, Name, Balance, Title, List, Area} from './styles'
 
+import Icon from '@expo/vector-icons/MaterialIcons';
 
 import Header from '../../components/Header';
 import {AuthContext} from '../../contexts/auth';
 import HistoricList from '../../components/HistoricList';
+import DatePicker from '../../components/DatePicker';
 
 export default function Home() {
 
   const [historic, sethistoric] = useState([]);
   const [balance, setBalance] = useState(0);
+  const [newdate, setNewDate] = useState(new Date());
+  const [showPickerDate, setShowPickerDate] = useState(false);
 
   const { user } = useContext(AuthContext); 
   const uid = user && user.uid;
@@ -26,7 +30,7 @@ export default function Home() {
 
       await firebase.database().ref('historic')
       .child(uid)
-      .orderByChild('date').equalTo(format(new Date, 'dd/MM/yy'))
+      .orderByChild('date').equalTo(format(newdate, 'dd/MM/yy'))
       .limitToLast(10).on('value', (snapshot) => {
         sethistoric([]);
 
@@ -43,7 +47,7 @@ export default function Home() {
     }
 
     loadingList();
-  }, [])
+  }, [newdate])
 
   function handleDelete(data){
     if( isPast(new Date(data.date)) ){
@@ -61,14 +65,14 @@ export default function Home() {
         },
         {
           text: 'Deletar',
-          onPress: () => handleDeleteSuccss(data)
+          onPress: () => handleDeleteSuccess(data)
         }
       ]
       )
 
   }
 
-  async function handleDeleteSuccss(data){
+  async function handleDeleteSuccess(data){
     await firebase.database().ref('historic')
     .child(uid).child(data.key).remove()
     .then( async () => {
@@ -84,6 +88,15 @@ export default function Home() {
 
   }
 
+  function handleShowPicker(){
+    setShowPickerDate(true);
+  }
+
+  function onChange(date) {
+    setShowPickerDate(false);
+    setNewDate(date);
+  }
+
   return (
    <Background>
      <Header/>
@@ -93,14 +106,27 @@ export default function Home() {
         <Balance>R$ {balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')}</Balance>
      </Container>
 
-     <Title>Últimas transações</Title>
+      <Area>
+        <TouchableOpacity onPress={ handleShowPicker }>
+         <Icon name="event" color="#fff" size={40}/>
+        </TouchableOpacity>
 
-     <List
-     showsVerticalScrollIndicator={false}
-     data={historic}
-     keyExtractor={ item => item.key}
-     renderItem={ ({ item })  => ( <HistoricList data={item} deleteItem={handleDelete} /> )}
-     />
+        <Title>Últimas transações</Title>
+      </Area>
+
+      <List
+      showsVerticalScrollIndicator={false}
+      data={historic}
+      keyExtractor={ item => item.key}
+      renderItem={ ({ item })  => ( <HistoricList data={item} deleteItem={handleDelete} /> )}
+      />
+
+      {showPickerDate && (
+        <DatePicker
+        date={newdate}
+        onChange={onChange}
+        />
+      )}
 
    </Background>
   );
